@@ -232,7 +232,7 @@ const PlayPage = () => {
               <div
                 key={idItem}
                 className={`
-                flex w-[48px] h-[48px] justify-center items-center border-gray-700 border-2 text-2xl font-bold uppercase
+                flex rounded-sm w-[48px] h-[48px] justify-center items-center border-gray-700 border-2 text-2xl font-bold uppercase
                 ${(!item.status) ? 'bg-transparent'
                     : item.status === "wrong" ? 'bg-gray-700 text-white'
                       : item.status === "correct" ? 'bg-green-600 border-green-600 text-white'
@@ -256,7 +256,7 @@ const PlayPage = () => {
               key={x}
               onClick={() => handleKeyboardType(character)}
               className={`
-                flex w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer
+                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer
                 ${keyboardSats[character] === 'correct' ? 'bg-green-600 border-green-600 text-white'
                   : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
                     : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
@@ -274,7 +274,7 @@ const PlayPage = () => {
               key={x}
               onClick={() => handleKeyboardType(character)}
               className={`
-                flex w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer
+                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer
                 ${keyboardSats[character] === 'correct' ? 'bg-green-600 border-green-600 text-white'
                   : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
                     : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
@@ -297,7 +297,7 @@ const PlayPage = () => {
               key={x}
               onClick={() => handleKeyboardType(character)}
               className={`
-                flex w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer
+                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer
                 ${keyboardSats[character] === 'correct' ? 'bg-green-600 border-green-600 text-white'
                   : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
                     : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
