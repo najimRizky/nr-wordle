@@ -2,6 +2,7 @@ import Footer from '@/components/modules/Footer'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
+import Header from '@/components/modules/Header'
 
 const nunito = Nunito({ subsets: ['latin'] })
 
@@ -18,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={nunito.className}>
+        <Header />
         <main >
           {children}
         </main>
