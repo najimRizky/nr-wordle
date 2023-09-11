@@ -1,3 +1,4 @@
+import Footer from '@/components/modules/Footer'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
@@ -17,9 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={nunito.className}>
-        <main className='my-8'>
+        <main >
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   )
