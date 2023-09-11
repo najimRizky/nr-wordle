@@ -1,12 +1,15 @@
 "use client"
 
+import "./index.css"
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, CSSProperties } from 'react'
 import TrashIcon from '@/components/icons/TrashIcon'
 import BackspaceIcon from '@/components/icons/BackspaceIcon'
 import { deepClone } from '@/helper/object'
 import axios from 'axios'
 import StatusType from '@/types/StatusType'
+import { motion, AnimatePresence } from 'framer-motion'
+import Link from "next/link"
 
 interface IAnswer {
   character: string
@@ -62,7 +65,7 @@ const PlayPage = () => {
   const router = useRouter()
 
   const length = Number(searchParams.get('length')) || 0
-  
+
   const [keyboardSats, setKeyboardSats] = useState({ ...initialKeyboardSats })
   const [currentTry, setCurrentTry] = useState(0)
   const [isWin, setIsWin] = useState<boolean | undefined>()
@@ -105,7 +108,7 @@ const PlayPage = () => {
   }, [length])
 
   useEffect(() => {
-      generateLevel()
+    generateLevel()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -178,8 +181,10 @@ const PlayPage = () => {
       updateKeyboardSats(data?.result)
 
       if (data?.word) {
-        setWord(data?.word)
-        setIsWin(data?.isCorrect)
+        setTimeout(() => {
+          setWord(data?.word)
+          setIsWin(data?.isCorrect)
+        }, (0.2 * length) * 1000)
       }
       return true
     } catch (error: any) {
@@ -222,125 +227,181 @@ const PlayPage = () => {
   }
 
   return (
-    <div className="container my-8">
+    <>
+      <div className="container my-8">
 
-      {/* Word Input */}
-      <div className="flex flex-col gap-2">
-        {answers?.map((answer, idAnswer) => (
-          <div className="flex gap-2 justify-center" key={idAnswer}>
-            {answer?.map((item, idItem) => (
+        {/* Word Input */}
+        <div
+          className="flex flex-col gap-2"
+
+        >
+          {answers?.map((answer, idAnswer) => (
+            <div
+              className="flex gap-2 justify-center"
+              key={idAnswer}
+            >
+              {answer?.map((item, idItem) => (
+                <AnimatePresence mode='wait' key={idItem}>
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0, perspective: 1000 }}
+                    animate={{
+                      scale: 1, opacity: 1
+                    }}
+                    key={item.character + idItem}
+                    className={`w-[48px] h-[48px] text-2xl font-bold uppercase relative`}
+                  >
+                    <div
+                      className={`w-full rounded-sm h-full answer-tile ${currentTry > idAnswer ? "rotate" : ""}`}
+                      style={{
+                        transformStyle: "preserve-3d",
+                        '--delay': `${0.15 * idItem}s`
+                      } as CSSProperties}
+                    >
+                      <div
+                        className="absolute top-0 left-0 w-full h-full flex justify-center items-center border-gray-700 border-2 "
+                        style={{
+                          backfaceVisibility: "hidden",
+                          WebkitBackfaceVisibility: "hidden",
+                        }}
+                      >
+                        {item.character}
+                      </div>
+                      <div
+                        className={`
+                        absolute top-0 left-0 w-full h-full flex justify-center items-center
+                        ${(!item.status) ? 'bg-transparent'
+                            : item.status === "wrong" ? 'bg-gray-700 text-white'
+                              : item.status === "correct" ? 'bg-green-600 border-green-600 text-white'
+                                : 'bg-yellow-500 border-yellow-500'
+                          }
+                      `}
+                        style={{
+                          backfaceVisibility: "hidden",
+                          WebkitBackfaceVisibility: "hidden",
+                          transform: "rotateX(180deg)",
+                        }}
+                      >
+                        {item.character}
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        {/* Keyboard */}
+        <div className="flex flex-col gap-2 items-center mt-16 uppercase" >
+          <div className="grid-cols-10 grid gap-2">
+            {keyboardChars[0].split('').map((character, x) => (
               <div
-                key={idItem}
+                key={x}
+                onClick={() => handleKeyboardType(character)}
                 className={`
-                flex rounded-sm w-[48px] h-[48px] justify-center items-center border-gray-700 border-2 text-2xl font-bold uppercase
-                ${(!item.status) ? 'bg-transparent'
-                    : item.status === "wrong" ? 'bg-gray-700 text-white'
-                      : item.status === "correct" ? 'bg-green-600 border-green-600 text-white'
-                        : 'bg-yellow-500 border-yellow-500'
-                  }  
-                
-              `}
+                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300
+                ${keyboardSats[character] === 'correct' ? 'bg-green-600 border-green-600 text-white'
+                    : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
+                      : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
+                        : ''
+                  }
+            `}
               >
-                {item.character}
+                {character}
               </div>
             ))}
           </div>
-        ))}
-      </div>
-
-      {/* Keyboard */}
-      <div className="flex flex-col gap-2 items-center mt-16 uppercase" >
-        <div className="grid-cols-10 grid gap-2">
-          {keyboardChars[0].split('').map((character, x) => (
-            <div
-              key={x}
-              onClick={() => handleKeyboardType(character)}
-              className={`
-                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer
+          <div className="grid-cols-10 grid gap-2">
+            {keyboardChars[1].split('').map((character, x) => (
+              <div
+                key={x}
+                onClick={() => handleKeyboardType(character)}
+                className={`
+                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300
                 ${keyboardSats[character] === 'correct' ? 'bg-green-600 border-green-600 text-white'
-                  : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
-                    : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
-                      : ''
-                }
-            `}
-            >
-              {character}
-            </div>
-          ))}
-        </div>
-        <div className="grid-cols-10 grid gap-2">
-          {keyboardChars[1].split('').map((character, x) => (
-            <div
-              key={x}
-              onClick={() => handleKeyboardType(character)}
-              className={`
-                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer
-                ${keyboardSats[character] === 'correct' ? 'bg-green-600 border-green-600 text-white'
-                  : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
-                    : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
-                      : ''}
+                    : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
+                      : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
+                        : ''}
               `}
-            >
-              {character}
-            </div>
-          ))}
-          <div
-            className="flex justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer"
-            onClick={() => handleKeyboardType('backspace')}
-          >
-            <BackspaceIcon width={22} />
-          </div>
-        </div>
-        <div className="grid-cols-10 grid gap-2">
-          {keyboardChars[2].split('').map((character, x) => (
-            <div
-              key={x}
-              onClick={() => handleKeyboardType(character)}
-              className={`
-                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer
-                ${keyboardSats[character] === 'correct' ? 'bg-green-600 border-green-600 text-white'
-                  : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
-                    : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
-                      : ''
-                }`}
-            >
-              {character}
-            </div>
-          ))}
-          <div
-            className="flex col-span-2 justify-center items-center bg-gray-300 text-lg font-bold cursor-pointer capitalize"
-            onClick={() => handleKeyboardType('enter')}
-          >
-            Enter
-          </div>
-          <div
-            className="flex justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer"
-            onClick={() => handleKeyboardType('delete')}
-          >
-            <TrashIcon width={28} />
-          </div>
-        </div>
-      </div>
-      {isWin !== undefined && (
-        // Modal
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded-sm p-8">
-            <div className="text-xl font-bold text-center">
-              {isWin ? "Congratulations" : "Oops, you lose"}
-            </div>
-            <div className="text-center">The word is <span className="font-bold">{word}</span></div>
-            <div className="flex justify-center mt-4">
-              <button
-                className="bg-green-600 text-white rounded-sm px-4 py-2"
-                onClick={resetLevel}
               >
-                Next Level
-              </button>
+                {character}
+              </div>
+            ))}
+            <div
+              className="flex justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300"
+              onClick={() => handleKeyboardType('backspace')}
+            >
+              <BackspaceIcon width={22} />
+            </div>
+          </div>
+          <div className="grid-cols-10 grid gap-2">
+            {keyboardChars[2].split('').map((character, x) => (
+              <div
+                key={x}
+                onClick={() => handleKeyboardType(character)}
+                className={`
+                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300
+                ${keyboardSats[character] === 'correct' ? 'bg-green-600 border-green-600 text-white'
+                    : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
+                      : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
+                        : ''
+                  }`}
+              >
+                {character}
+              </div>
+            ))}
+            <div
+              className="flex col-span-2 justify-center items-center bg-gray-300 text-lg font-bold cursor-pointer capitalize hover:bg-gray-400 duration-300"
+              onClick={() => handleKeyboardType('enter')}
+            >
+              Enter
+            </div>
+            <div
+              className="flex justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300"
+              onClick={() => handleKeyboardType('delete')}
+            >
+              <TrashIcon width={28} />
             </div>
           </div>
         </div>
-      )}
-    </div>
+      </div >
+      <AnimatePresence>
+        {isWin !== undefined && (
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            >
+            <div className="bg-white rounded-sm p-8 min-w-[300px]">
+              <div className="text-xl font-bold text-center mb-8">
+                {isWin ? "Congratulations" : "Oops, you lose"}
+              </div>
+              <div className="text-center">The word is:</div>
+              <p
+                className="text-center text-2xl font-bold mt-2 uppercase"
+              >
+                {word}
+              </p>
+              <div className="flex flex-col items-center gap-4 mt-4">
+                <button
+                  className="bg-green-600 text-white rounded-sm px-4 py-2"
+                  onClick={resetLevel}
+                >
+                  Play Again
+                </button>
+                <Link
+                  href="/"
+                  className="hover:underline"
+                >
+                  Back to Home
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 

@@ -1,0 +1,9 @@
+.answer-tile {
+  transform: rotateX(0);
+  transition: transform 0.5s ease-in-out;
+  transition-delay: var(--delay);
+}
+
+.answer-tile.rotate {
+  transform: rotateX(180deg);
+}
