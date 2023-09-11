@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 
@@ -79,10 +79,25 @@ const levelSelections = [
 
 const HomePage = () => {
   const [initial, setInitial] = useState(true)
+  const [wordIndex, setWordIndex] = useState(0)
 
   const handlePlay = () => {
     setInitial(false)
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordIndex((prev) => {
+        if (prev === 2) {
+          return 0
+        } else {
+          return prev + 1
+        }
+      })
+    }, 4000)
+
+    return () => clearInterval(interval)
+  }, [wordIndex])
 
   return (
     <div className="container ">
@@ -148,7 +163,7 @@ const HomePage = () => {
           ))}
         </div>
         <div className={`w-[550px] relative flex justify-center duration-500 ${initial ? "h-40" : "h-80"}`}>
-          <AnimatePresence>
+          <AnimatePresence initial={false}>
             {initial && (
               <motion.div
                 className="flex flex-col gap-4 mt-16"
@@ -226,9 +241,34 @@ const HomePage = () => {
                     >
                       <p className="text-center text-sm">{level.length} Characters</p>
                       <div
-                        className="w-36 font-bold py-1 mt-1 bg-gray-300 rounded-sm flex justify-center items-center mx-auto"
+                        className="w-36 font-bold py-1 mt-1 bg-gray-300 rounded-sm flex justify-center items-center mx-auto overflow-hidden"
                       >
-                        {level.words[0]}
+                        <AnimatePresence mode="wait">
+                          <motion.p
+                            key={wordIndex}
+                            initial={{
+                              y: "100%"
+                            }}
+                            animate={{
+                              y: "0%",
+                              x: "0%",
+                              opacity: 1,
+                              transition: {
+                                ease: "easeInOut",
+                              }
+                            }}
+                            exit={{
+                              y: wordIndex === 1 ? "-100%" : wordIndex === 2 ? "0%" : "0%",
+                              x: wordIndex === 1 ? "0" : wordIndex === 2 ? "-100%" : "100%",
+                              opacity: 0,
+                              transition: {
+                                ease: "easeInOut",
+                              }
+                            }}
+                          >
+                            {level.words[wordIndex]}
+                          </motion.p>
+                        </AnimatePresence>
                       </div>
                     </Link>
                   ))}
@@ -237,7 +277,7 @@ const HomePage = () => {
             )}
           </AnimatePresence>
         </div>
-      </motion.div>
+      </motion.div >
     </div >
   )
 }
