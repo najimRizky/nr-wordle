@@ -22,7 +22,7 @@ export const GET = async (req: NextRequest) => {
   const encryptedString = cryptr.encrypt(word);
 
   const response = NextResponse.json({
-    word: encryptedString,
+    message: "ok"
   })
 
   response.cookies.set("word", encryptedString, baseCookie)
