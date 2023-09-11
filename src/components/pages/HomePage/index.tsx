@@ -3,40 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
-
-
-const wordleProps = [
-  {
-    char: "W",
-    bgColor: "bg-red-400",
-    delay: 1.5
-  },
-  {
-    char: "O",
-    bgColor: "bg-blue-500",
-    delay: 1.8
-  },
-  {
-    char: "R",
-    bgColor: "bg-green-500",
-    delay: 1.3
-  },
-  {
-    char: "D",
-    bgColor: "bg-yellow-500",
-    delay: 1.6
-  },
-  {
-    char: "L",
-    bgColor: "bg-purple-500",
-    delay: 1.4
-  },
-  {
-    char: "E",
-    bgColor: "bg-pink-400",
-    delay: 1.7
-  },
-]
+import wordleProps from "@/config/wordleProps"
 
 const levelSelections = [
   // {
@@ -103,7 +70,7 @@ const HomePage = () => {
     <div className="container ">
       <motion.div
         layout
-        className="flex items-center justify-center flex-col min-h-screen"
+        className="flex items-center justify-center flex-col min-h-[92vh]"
         transition={{
           duration: 0.5,
           type: "tween"

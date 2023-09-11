@@ -2,7 +2,7 @@ import Link from "next/link"
 
 const Footer = () => {
   return (
-    <div className="flex justify-center fixed w-screen bottom-0">
+    <div className={`flex justify-center w-full pb-3`}>
       <p>
         <span
           className="font-extralight"
