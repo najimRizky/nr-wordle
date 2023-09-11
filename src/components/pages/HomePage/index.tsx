@@ -129,7 +129,7 @@ const HomePage = () => {
             </div>
           ))}
         </div>
-        <div className={`w-[550px] relative flex justify-center delay-500 duration-500 ${initial ? "h-40" : "h-80"}`}>
+        <div className={`w-[550px] relative flex justify-center delay-500 duration-500 ${initial ? "h-72" : "h-80"}`}>
           <AnimatePresence initial={false}>
             {initial && (
               <motion.div
@@ -162,6 +162,15 @@ const HomePage = () => {
                 <button className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300">
                   How to Play
                 </button>
+                <Link href={"/leaderboard"} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
+                  Leaderboard
+                </Link>
+                <Link href={"/login"} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
+                  Login
+                </Link>
+                {/* <Link href={"/profile"} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
+                  Profile
+                </Link> */}
               </motion.div>
             )}
           </AnimatePresence>
