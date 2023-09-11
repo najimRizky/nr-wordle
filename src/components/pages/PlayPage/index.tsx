@@ -2,14 +2,16 @@
 
 import "./index.css"
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useEffect, useState, CSSProperties } from 'react'
+import { useEffect, useState, CSSProperties, useRef } from 'react'
 import TrashIcon from '@/components/icons/TrashIcon'
 import BackspaceIcon from '@/components/icons/BackspaceIcon'
 import { deepClone } from '@/helper/object'
 import axios from 'axios'
 import StatusType from '@/types/StatusType'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, animate } from 'framer-motion'
 import Link from "next/link"
+import { getLocalStorage, setLocalStorage } from "@/helper/localStorage"
+import StatsType from "@/types/StatsType"
 
 interface IAnswer {
   character: string
@@ -63,6 +65,7 @@ const initialKeyboardSats: {
 const PlayPage = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const inValidWordRef: any = useRef([])
 
   const length = Number(searchParams.get('length')) || 0
 
@@ -70,6 +73,7 @@ const PlayPage = () => {
   const [currentTry, setCurrentTry] = useState(0)
   const [isWin, setIsWin] = useState<boolean | undefined>()
   const [word, setWord] = useState('')
+  const [stats, setStats] = useState<StatsType | undefined>()
   const [answers, setAnswers] = useState<IAnswer[][]>(
     Array.from({ length: maxTry }).map(() =>
       Array.from({ length }).map(() => initialAnswer)
@@ -109,13 +113,14 @@ const PlayPage = () => {
 
   useEffect(() => {
     generateLevel()
+    setStats(getLocalStorage("stats") || { total: 0, losses: 0, wins: 0, percentage: 0 })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleKeyboardType = (character: string) => {
     if (character === 'backspace') {
       handleDelete();
-    } else if (character === 'clear') {
+    } else if (character === 'delete') {
       handleClear();
     } else if (character === 'enter') {
       handleEnter();
@@ -184,11 +189,22 @@ const PlayPage = () => {
         setTimeout(() => {
           setWord(data?.word)
           setIsWin(data?.isCorrect)
+          const newStats = {
+            total: (stats?.total || 0) + 1,
+            losses: (stats?.losses || 0) + (data?.isCorrect ? 0 : 1),
+            wins: (stats?.wins || 0) + (data?.isCorrect ? 1 : 0),
+            percentage: (((stats?.wins || 0) + (data?.isCorrect ? 1 : 0)) / ((stats?.total || 0) + 1)) * 100
+          }
+          setStats(newStats)
+          setLocalStorage('stats', newStats)
         }, (0.2 * length) * 1000)
       }
       return true
     } catch (error: any) {
-      console.log(error.response.data)
+      const errorMessage = error.response.data
+      if (errorMessage === "Word is not available") {
+        animateInvalidWord()
+      }
     }
   }
 
@@ -226,6 +242,15 @@ const PlayPage = () => {
     setIsWin(undefined)
   }
 
+  const animateInvalidWord = () => {
+    animate(inValidWordRef.current[currentTry], {
+      x: [-5, 5, -5, 5, -5, 5, 0],
+      transition: {
+        duration: 0.1,
+      },
+    });
+  }
+
   return (
     <>
       <div className="container my-8">
@@ -233,12 +258,12 @@ const PlayPage = () => {
         {/* Word Input */}
         <div
           className="flex flex-col gap-2"
-
         >
           {answers?.map((answer, idAnswer) => (
-            <div
+            <motion.div
               className="flex gap-2 justify-center"
               key={idAnswer}
+              ref={(el) => (inValidWordRef.current[idAnswer] = el) as any}
             >
               {answer?.map((item, idItem) => (
                 <AnimatePresence mode='wait' key={idItem}>
@@ -287,7 +312,7 @@ const PlayPage = () => {
                   </motion.div>
                 </AnimatePresence>
               ))}
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -372,8 +397,8 @@ const PlayPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            >
-            <div className="bg-white rounded-sm p-8 min-w-[300px]">
+          >
+            <div className="bg-white rounded-sm p-8 min-w-[500px]">
               <div className="text-xl font-bold text-center mb-8">
                 {isWin ? "Congratulations" : "Oops, you lose"}
               </div>
@@ -383,6 +408,27 @@ const PlayPage = () => {
               >
                 {word}
               </p>
+
+              {/* Show stats */}
+              <div className="flex justify-center my-12 gap-4">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="text-xl">{stats?.total}</div>
+                  <div className="text-xl font-bold">Total</div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="text-xl">{stats?.wins}</div>
+                  <div className="text-xl font-bold">Wins</div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="text-xl">{stats?.losses}</div>
+                  <div className="text-xl font-bold">Losses</div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="text-xl">{stats?.percentage.toFixed(2)}%</div>
+                  <div className="text-xl font-bold">Win Rate</div>
+                </div>
+              </div>
+
               <div className="flex flex-col items-center gap-4 mt-4">
                 <button
                   className="bg-green-600 text-white rounded-sm px-4 py-2"
