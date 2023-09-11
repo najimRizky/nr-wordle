@@ -8,7 +8,7 @@ import Link from "next/link"
 const wordleProps = [
   {
     char: "W",
-    bgColor: "bg-red-500",
+    bgColor: "bg-red-400",
     delay: 1.5
   },
   {
@@ -33,16 +33,16 @@ const wordleProps = [
   },
   {
     char: "E",
-    bgColor: "bg-pink-500",
+    bgColor: "bg-pink-400",
     delay: 1.7
   },
 ]
 
 const levelSelections = [
-  {
-    length: 3,
-    words: ["EAR", "ETA", "TAX"],
-  },
+  // {
+  //   length: 3,
+  //   words: ["EAR", "ETA", "TAX"],
+  // },
   {
     length: 4,
     words: ["EARN", "TIME", "BUSY"],
@@ -162,7 +162,7 @@ const HomePage = () => {
             </div>
           ))}
         </div>
-        <div className={`w-[550px] relative flex justify-center duration-500 ${initial ? "h-40" : "h-80"}`}>
+        <div className={`w-[550px] relative flex justify-center delay-500 duration-500 ${initial ? "h-40" : "h-80"}`}>
           <AnimatePresence initial={false}>
             {initial && (
               <motion.div
@@ -231,7 +231,7 @@ const HomePage = () => {
                   Choose character length:
                 </p>
                 <div
-                  className="grid grid-cols-3 ">
+                  className="flex flex-wrap justify-center">
                   {levelSelections.map((level, index) => (
                     <Link
                       href={`/play?length=${level.length}`}
@@ -247,7 +247,8 @@ const HomePage = () => {
                           <motion.p
                             key={wordIndex}
                             initial={{
-                              y: "100%"
+                              y: wordIndex === 1 ? "100%" : wordIndex === 2 ? "0%" : "0%",
+                              x: wordIndex === 1 ? "0" : wordIndex === 2 ? "100%" : "-100%",
                             }}
                             animate={{
                               y: "0%",
