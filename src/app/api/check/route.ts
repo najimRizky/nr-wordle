@@ -40,7 +40,7 @@ export const POST = async (req: NextRequest) => {
     const response =  NextResponse.json({
       result: result.data,
       isCorrect: result.isCorrect,
-      word: tries === 5 ? word : undefined,
+      word: (tries === 5 || result.isCorrect) ? word : undefined,
     })
 
     response.cookies.set("tries", String(tries + 1), baseCookie)
