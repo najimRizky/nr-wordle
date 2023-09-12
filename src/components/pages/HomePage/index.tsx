@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import wordleProps from "@/config/wordleProps"
+import { signIn } from "next-auth/react"
 
 const levelSelections = [
   // {
@@ -165,9 +166,9 @@ const HomePage = () => {
                 <Link href={"/leaderboard"} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
                   Leaderboard
                 </Link>
-                <Link href={"/login"} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
+                <button onClick={() => signIn()} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
                   Login
-                </Link>
+                </button>
                 {/* <Link href={"/profile"} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
                   Profile
                 </Link> */}

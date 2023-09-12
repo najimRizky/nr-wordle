@@ -4,11 +4,13 @@ import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import wordleProps from "@/config/wordleProps"
 import Link from "next/link"
+import { signIn, useSession, signOut } from "next-auth/react"
 
 const excludeHeader = ['/login', '/']
 
 const Header = () => {
   const pathname = usePathname()
+  const { data: session } = useSession()
   if (excludeHeader.includes(pathname)) return null
   return (
     <header className="container py-4">
@@ -66,9 +68,16 @@ const Header = () => {
             </div>
           ))}
         </Link>
-        <Link href="/login" className="font-bold text-sm flex items-center gap-x-2 bg-gray-800 px-4 py-2 rounded-sm hover:bg-gray-700 duration-300 text-white">
-          Sign In
-        </Link>
+
+        {session ? (
+          <button onClick={() => signOut()} className="font-bold text-sm flex items-center gap-x-2 bg-gray-800 px-4 py-2 rounded-sm hover:bg-gray-700 duration-300 text-white">
+            Sign Out
+          </button>
+        ) : (
+          <button onClick={() => signIn()} className="font-bold text-sm flex items-center gap-x-2 bg-gray-800 px-4 py-2 rounded-sm hover:bg-gray-700 duration-300 text-white">
+            Sign In
+          </button>
+        )}
       </div>
     </header >
   )
