@@ -16,7 +16,7 @@ const wordleProps = [
   },
   {
     char: "D",
-    bgColor: "bg-yellow-500",
+    bgColor: "bg-yellow-400",
     delay: 1.6
   },
   {
