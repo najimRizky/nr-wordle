@@ -1,7 +1,8 @@
+import LeaderboardPage from "@/components/pages/LeaderboardPage"
 
 const Leaderboard = () => {
   return (
-    <div>Leaderboard</div>
+    <LeaderboardPage />
   )
 }
 
