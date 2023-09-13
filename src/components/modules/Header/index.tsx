@@ -1,16 +1,24 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import wordleProps from "@/config/wordleProps"
 import Link from "next/link"
 import { signIn, useSession, signOut } from "next-auth/react"
+import { useState } from "react"
+import { ID } from "country-flag-icons/react/3x2"
 
 const excludeHeader = ['/login', '/']
 
 const Header = () => {
   const pathname = usePathname()
   const { data: session } = useSession()
+  const [profileDropdown, setProfileDropdown] = useState(false)
+
+  const toggleProfileDropdown = (state: boolean | undefined) => {
+    setProfileDropdown(state || !profileDropdown)
+  }
+
   if (excludeHeader.includes(pathname)) return null
   return (
     <header className="container py-4">
@@ -70,9 +78,33 @@ const Header = () => {
         </Link>
 
         {session ? (
-          <button onClick={() => signOut()} className="font-bold text-sm flex items-center gap-x-2 bg-gray-800 px-4 py-2 rounded-sm hover:bg-gray-700 duration-300 text-white">
-            Sign Out
-          </button>
+          <>
+            <div
+              className="relative"
+              onMouseOver={() => toggleProfileDropdown(true)}
+              onMouseLeave={() => toggleProfileDropdown(false)}
+            >
+              <Link href="/profile"
+                className="text-sm flex items-center gap-x-2 py-2 rounded-sm duration-300"
+              >
+                @jimzkuy123 <ID title="Indonesia" width={30} />
+              </Link  >
+              <AnimatePresence>
+                {profileDropdown && (
+                  <motion.div
+                    className="absolute top-full right-0 rounded-b rounded-sm w-[100px] border-4 text-right"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    <button onClick={() => signOut()} className="font-bold text-sm flex items-center gap-x-2 px-4 py-2 rounded-sm ">
+                      Sign Out
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </>
         ) : (
           <button onClick={() => signIn()} className="font-bold text-sm flex items-center gap-x-2 bg-gray-800 px-4 py-2 rounded-sm hover:bg-gray-700 duration-300 text-white">
             Sign In

@@ -24,9 +24,6 @@ const config: Config = {
       center: true,
       padding: '16px',
     }
-  },
-  plugins: [
-    require('flowbite/plugin')
-  ]
+  }
 }
 export default config

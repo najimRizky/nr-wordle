@@ -8,10 +8,10 @@ const SessionProvider = ({ children, session }: any) => {
   const initialUser = async () => {
     try {
       const stats = getLocalStorage('stats')
-      await axios.post('/api/user', {
+      const user = await axios.post('/api/user', {
         ...stats
       })
-
+      setLocalStorage('user', user.data.data)
       setLocalStorage('isInitialized', true)
     } catch (error) {
       console.log(error)
