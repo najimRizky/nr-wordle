@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import wordleProps from "@/config/wordleProps"
-import { signIn } from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react"
 
 const levelSelections = [
   // {
@@ -46,6 +46,8 @@ const levelSelections = [
 ]
 
 const HomePage = () => {
+  const session = useSession()
+
   const [initial, setInitial] = useState(true)
   const [wordIndex, setWordIndex] = useState(0)
 
@@ -130,7 +132,7 @@ const HomePage = () => {
             </div>
           ))}
         </div>
-        <div className={`w-[550px] relative flex justify-center delay-500 duration-500 ${initial ? "h-72" : "h-80"}`}>
+        <div className={`w-[550px] relative flex justify-center delay-500 duration-500 ${ initial ? "h-64" : "h-80"}`}>
           <AnimatePresence initial={false}>
             {initial && (
               <motion.div
@@ -166,12 +168,16 @@ const HomePage = () => {
                 <Link href={"/leaderboard"} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
                   Leaderboard
                 </Link>
-                <button onClick={() => signIn()} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
-                  Login
-                </button>
-                {/* <Link href={"/profile"} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
-                  Profile
-                </Link> */}
+                {!session.data ? (
+                  <button onClick={() => signIn()} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
+                    Login
+                  </button>
+                ) : (
+                  <button onClick={() => signOut()} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
+                    Logout
+                  </button>
+                )}
+                  
               </motion.div>
             )}
           </AnimatePresence>
