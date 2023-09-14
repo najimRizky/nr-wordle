@@ -2,7 +2,7 @@
 
 import "./index.css"
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useEffect, useState, CSSProperties, useRef } from 'react'
+import { useEffect, useState, CSSProperties, useRef, useContext } from 'react'
 import TrashIcon from '@/components/icons/TrashIcon'
 import BackspaceIcon from '@/components/icons/BackspaceIcon'
 import { deepClone } from '@/helper/object'
@@ -10,8 +10,7 @@ import axios from 'axios'
 import StatusType from '@/types/StatusType'
 import { motion, AnimatePresence, animate } from 'framer-motion'
 import Link from "next/link"
-import { getLocalStorage, setLocalStorage } from "@/helper/localStorage"
-import StatsType from "@/types/StatsType"
+import { UserContext } from "@/context/UserContextProvider"
 
 interface IAnswer {
   character: string
@@ -73,12 +72,13 @@ const PlayPage = () => {
   const [currentTry, setCurrentTry] = useState(0)
   const [isWin, setIsWin] = useState<boolean | undefined>()
   const [word, setWord] = useState('')
-  const [stats, setStats] = useState<StatsType | undefined>()
   const [answers, setAnswers] = useState<IAnswer[][]>(
     Array.from({ length: maxTry }).map(() =>
       Array.from({ length }).map(() => initialAnswer)
     )
   )
+
+  const { stats, updateStats } = useContext(UserContext)
 
   useEffect(() => {
     let isKeydown = false;
@@ -113,7 +113,6 @@ const PlayPage = () => {
 
   useEffect(() => {
     generateLevel()
-    setStats(getLocalStorage("stats") || { total: 0, losses: 0, wins: 0, percentage: 0 })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -189,14 +188,25 @@ const PlayPage = () => {
         setTimeout(() => {
           setWord(data?.word)
           setIsWin(data?.isCorrect)
-          const newStats = {
-            total: (stats?.total || 0) + 1,
-            losses: (stats?.losses || 0) + (data?.isCorrect ? 0 : 1),
-            wins: (stats?.wins || 0) + (data?.isCorrect ? 1 : 0),
-            percentage: (((stats?.wins || 0) + (data?.isCorrect ? 1 : 0)) / ((stats?.total || 0) + 1)) * 100
+          if (data?.stats) {
+            const newStats = data?.stats
+            updateStats(newStats)
+          } else {
+            const newStats = stats || {
+              total: 0,
+              wins: 0,
+              losses: 0,
+              percentage: 0
+            }
+            if (data?.isCorrect) {
+              newStats.wins += 1
+            } else {
+              newStats.losses += 1
+            }
+            newStats.total += 1
+            newStats.percentage = (newStats.wins / newStats.total) * 100
+            updateStats(newStats)
           }
-          setStats(newStats)
-          setLocalStorage('stats', newStats)
         }, (0.2 * length) * 1000)
       }
       return true
@@ -424,7 +434,7 @@ const PlayPage = () => {
                   <div className="text-xl font-bold">Losses</div>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="text-xl">{stats?.percentage.toFixed(2)}%</div>
+                  <div className="text-xl">{(stats?.percentage * 100).toFixed(2)}%</div>
                   <div className="text-xl font-bold">Win Rate</div>
                 </div>
               </div>

@@ -29,8 +29,11 @@ export const GET = async (req: NextRequest) => {
     const session = await getServerSession()
 
     if (!session?.user) {
+    leaderboard.map(user => delete user.email)
       return NextResponse.json({
-        data: leaderboard
+        data: {
+          leaderboard: leaderboard.slice(0, 10),
+        }
       })
     }
 

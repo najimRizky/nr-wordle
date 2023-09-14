@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import wordleProps from "@/config/wordleProps"
 import { signIn, signOut, useSession } from "next-auth/react"
+import { removeLocalStorage } from "@/helper/localStorage"
 
 const levelSelections = [
   // {
@@ -53,6 +54,12 @@ const HomePage = () => {
 
   const handlePlay = () => {
     setInitial(false)
+  }
+
+  const handleSignOut = () => {
+    removeLocalStorage('user')
+    removeLocalStorage('isInitialized')
+    signOut()
   }
 
   useEffect(() => {
@@ -173,7 +180,7 @@ const HomePage = () => {
                     Login
                   </button>
                 ) : (
-                  <button onClick={() => signOut()} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
+                  <button onClick={handleSignOut} className="bg-gray-700 font-bold w-48 px-4 py-2 rounded-sm text-white hover:bg-gray-600 duration-300 text-center">
                     Logout
                   </button>
                 )}

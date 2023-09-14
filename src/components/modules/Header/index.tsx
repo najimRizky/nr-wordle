@@ -8,6 +8,7 @@ import { useContext, useState } from "react"
 import { UserContext } from "@/context/UserContextProvider"
 import dynamic from 'next/dynamic'
 import Flag from "../Flag"
+import { removeLocalStorage } from "@/helper/localStorage"
 const Link = dynamic(() => import("next/link"), { ssr: false })
 
 const excludeHeader = ['/login', '/']
@@ -20,6 +21,12 @@ const Header = () => {
 
   const toggleProfileDropdown = (state: boolean | undefined) => {
     setProfileDropdown(state || !profileDropdown)
+  }
+
+  const handleSignOut = () => {
+    removeLocalStorage('user')
+    removeLocalStorage('isInitialized')
+    signOut()
   }
 
   if (excludeHeader.includes(pathname)) return null
@@ -100,8 +107,8 @@ const Header = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
-                    <button onClick={() => signOut()} className="font-bold text-sm flex items-center gap-x-2 px-4 py-2 rounded-sm ">
-                      Sign Out
+                    <button onClick={handleSignOut} className="font-bold text-sm flex items-center gap-x-2 px-4 py-2 rounded-sm ">
+                      Logout
                     </button>
                   </motion.div>
                 )}
@@ -110,7 +117,7 @@ const Header = () => {
           </>
         ) : (
           <button onClick={() => signIn()} className="font-bold text-sm flex items-center gap-x-2 bg-gray-800 px-4 py-2 rounded-sm hover:bg-gray-700 duration-300 text-white">
-            Sign In
+            Login
           </button>
         )}
       </div>

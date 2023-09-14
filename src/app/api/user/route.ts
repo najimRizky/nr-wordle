@@ -21,7 +21,19 @@ export const POST = async (req: NextRequest) => {
     if (findUser) {
       return NextResponse.json({
         message: "OK",
-        data: findUser
+        data: {
+          user: {
+            username: findUser.username,
+            email: findUser.email,
+            country: findUser.country,
+          },
+          stats: {
+            wins: findUser.stats.wins,
+            losses: findUser.stats.losses,
+            total: findUser.stats.total,
+            percentage: findUser.stats.percentage,
+          }
+        }
       })
     }
 
@@ -41,7 +53,19 @@ export const POST = async (req: NextRequest) => {
 
     return NextResponse.json({
       message: "OK",
-      data: newUser
+      data: {
+        user: {
+          username: newUser.username,
+          email: newUser.email,
+          country: newUser.country,
+        },
+        stats: {
+          wins: newUser.stats.wins,
+          losses: newUser.stats.losses,
+          total: newUser.stats.total,
+          percentage: newUser.stats.percentage,
+        }
+      }
     })
   } catch (e) {
     return new Response("Something Went Wrong", { status: 500 })

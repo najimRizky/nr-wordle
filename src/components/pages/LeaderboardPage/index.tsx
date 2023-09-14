@@ -50,7 +50,7 @@ const LeaderboardPage = () => {
             {leaderboardData?.leaderboard?.map((user: any, index: number) => (
               <tr
                 className={`border-b border-slate-400 
-                ${session && user.username === userContext.username ? 'bg-red-200 font-bold' : ''}`}
+                ${session && user.username === userContext?.username ? 'bg-red-200 font-bold' : ''}`}
                 key={index}
               >
                 <td className="p-2 text-right text-xl font-bold">{index + 1}</td>
@@ -58,7 +58,7 @@ const LeaderboardPage = () => {
                 <td className="p-2">{user.stats.wins}</td>
                 <td className="p-2">{user.stats.losses}</td>
                 <td className="p-2">{user.stats.total}</td>
-                <td className="p-2">{user.stats.percentage}%</td>
+                <td className="p-2">{(user.stats.percentage * 100).toFixed(2)}%</td>
               </tr>
             ))}
             {(session && leaderboardData?.user?.position > 10) && (
@@ -74,7 +74,7 @@ const LeaderboardPage = () => {
                   <td className="p-2">{leaderboardData?.user?.stats.wins}</td>
                   <td className="p-2">{leaderboardData?.user?.stats.losses}</td>
                   <td className="p-2">{leaderboardData?.user?.stats.total}</td>
-                  <td className="p-2">{leaderboardData?.user?.stats.percentage}%</td>
+                  <td className="p-2">{(leaderboardData?.user?.stats.percentage * 100).toFixed(2)}%</td>
                 </tr>
               </>
             )}

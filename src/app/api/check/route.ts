@@ -3,6 +3,9 @@ import Cryptr from "cryptr";
 import StatusType from "@/types/StatusType";
 import dictionary from "@/data/dictionary.json";
 import baseCookie from "@/config/baseCookie";
+import dbConnect from "@/database/connection";
+import { getServerSession } from "next-auth";
+import User from "@/database/model/User";
 
 export const POST = async (req: NextRequest) => {
   const { answer } = await req.json()
@@ -28,6 +31,7 @@ export const POST = async (req: NextRequest) => {
   }
 
   try {
+
     const cryptr = new Cryptr(ENCRYPTION_KEY);
     const word = cryptr.decrypt(rawWord);
 
@@ -36,11 +40,42 @@ export const POST = async (req: NextRequest) => {
     }
 
     const result = determineResult(word, answer);
+    const isCorrect = result.isCorrect;
 
-    const response =  NextResponse.json({
+    const session = await getServerSession()
+    let userStats: any = null
+
+    if (session?.user) {
+      await dbConnect()
+      const user = await User.findOne({ email: session.user.email })
+
+      if (isCorrect) {
+        await User.updateOne(
+          { email: session.user.email },
+          {
+            $inc: { 'stats.wins': 1 },
+            'stats.percentage': (user.stats.wins + 1) / (user.stats.total + 1),
+            'stats.total': user.stats.wins + 1 + user.stats.losses,
+          })
+      } else if (tries === 5) {
+        await User.updateOne(
+          { email: session.user.email },
+          {
+            $inc: { 'stats.losses': 1 },
+            'stats.percentage': (user.stats.wins) / (user.stats.total + 1),
+            'stats.total': user.stats.wins + user.stats.losses + 1,
+          })
+      }
+
+      userStats = await User.findOne({ email: session.user.email }, { stats: 1 })
+    }
+
+    const response = NextResponse.json({
       result: result.data,
-      isCorrect: result.isCorrect,
-      word: (tries === 5 || result.isCorrect) ? word : undefined,
+      isCorrect: isCorrect,
+      word: (tries === 5 || isCorrect) ? word : undefined,
+      stats: userStats?.stats,
+
     })
 
     response.cookies.set("tries", String(tries + 1), baseCookie)
