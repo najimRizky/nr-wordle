@@ -3,10 +3,12 @@
 import { usePathname } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
 import wordleProps from "@/config/wordleProps"
-import Link from "next/link"
 import { signIn, useSession, signOut } from "next-auth/react"
-import { useState } from "react"
-import { ID } from "country-flag-icons/react/3x2"
+import { useContext, useState } from "react"
+import { UserContext } from "@/context/UserContextProvider"
+import dynamic from 'next/dynamic'
+import Flag from "../Flag"
+const Link = dynamic(() => import("next/link"), { ssr: false })
 
 const excludeHeader = ['/login', '/']
 
@@ -14,6 +16,7 @@ const Header = () => {
   const pathname = usePathname()
   const { data: session } = useSession()
   const [profileDropdown, setProfileDropdown] = useState(false)
+  const { user } = useContext(UserContext)
 
   const toggleProfileDropdown = (state: boolean | undefined) => {
     setProfileDropdown(state || !profileDropdown)
@@ -84,10 +87,10 @@ const Header = () => {
               onMouseOver={() => toggleProfileDropdown(true)}
               onMouseLeave={() => toggleProfileDropdown(false)}
             >
-              <Link href="/profile"
+              <Link href="/profile" prefetch={false}
                 className="text-sm flex items-center gap-x-2 py-2 rounded-sm duration-300"
               >
-                @jimzkuy123 <ID title="Indonesia" width={30} />
+                @{user?.username} <Flag countryCode={user?.country} />
               </Link  >
               <AnimatePresence>
                 {profileDropdown && (

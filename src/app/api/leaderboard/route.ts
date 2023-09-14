@@ -20,6 +20,7 @@ export const GET = async (req: NextRequest) => {
           username: 1,
           email: 1,
           stats: 1,
+          country: 1,
           _id: 0
         }
       },

@@ -1,13 +1,16 @@
 "use client"
 
+import Flag from "@/components/modules/Flag"
+import { UserContext } from "@/context/UserContextProvider"
 import axios from "axios"
 import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 const LeaderboardPage = () => {
   const { data: session } = useSession()
   const [leaderboardData, setLeaderboardData] = useState<any>()
   const [loading, setLoading] = useState<boolean>(true)
+  const { user: userContext } = useContext(UserContext)
 
   const getLeaderboardData = async () => {
     try {
@@ -47,12 +50,11 @@ const LeaderboardPage = () => {
             {leaderboardData?.leaderboard?.map((user: any, index: number) => (
               <tr
                 className={`border-b border-slate-400 
-                ${session && index === 3 ? 'bg-red-200 font-bold' : ''}
-                `}
+                ${session && user.username === userContext.username ? 'bg-red-200 font-bold' : ''}`}
                 key={index}
               >
                 <td className="p-2 text-right text-xl font-bold">{index + 1}</td>
-                <td className="p-2 text-sm">@{user.username}</td>
+                <td className="p-2 text-sm flex gap-x-3"><Flag countryCode={user?.country} /> @{user.username}</td>
                 <td className="p-2">{user.stats.wins}</td>
                 <td className="p-2">{user.stats.losses}</td>
                 <td className="p-2">{user.stats.total}</td>
