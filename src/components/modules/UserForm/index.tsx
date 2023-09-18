@@ -15,7 +15,7 @@ const UserForm = ({ data, onSuccess }: { data: { username: string, country: stri
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [formData, setFormData] = useState({
     username: data?.username || '',
-    country: data?.country.toUpperCase() || ''
+    country: data?.country?.toUpperCase() || ''
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<boolean>()
