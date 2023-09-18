@@ -90,7 +90,20 @@ export const GET = async (req: NextRequest) => {
 
     return NextResponse.json({
       message: "OK",
-      data: findUser
+      data: {
+        user: {
+          username: findUser.username,
+          email: findUser.email,
+          country: findUser.country,
+          createdAt: findUser.createdAt,
+        },
+        stats: {
+          wins: findUser.stats.wins,
+          losses: findUser.stats.losses,
+          total: findUser.stats.total,
+          percentage: findUser.stats.percentage,
+        }
+      }
     })
   } catch (e) {
     return new Response("Something Went Wrong", { status: 500 })

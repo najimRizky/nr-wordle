@@ -1,6 +1,7 @@
 "use client"
 
 import Flag from "@/components/modules/Flag"
+import Spinner from "@/components/modules/Spinner"
 import { UserContext } from "@/context/UserContextProvider"
 import axios from "axios"
 import { useSession } from "next-auth/react"
@@ -31,9 +32,7 @@ const LeaderboardPage = () => {
     <div className="container my-8">
       <h1 className="text-center text-lg">LEADERBOARD</h1>
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-900"></div>
-        </div>
+        <Spinner />
       ) : (
         <table className="w-full mt-6">
           <thead>
