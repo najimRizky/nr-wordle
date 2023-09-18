@@ -77,6 +77,7 @@ const PlayPage = () => {
       Array.from({ length }).map(() => initialAnswer)
     )
   )
+  const [loading, setLoading] = useState(false)
 
   const { stats, updateStats } = useContext(UserContext)
 
@@ -102,7 +103,7 @@ const PlayPage = () => {
       window.removeEventListener('keyup', keyupListener);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [answers, currentTry]);
+  }, [answers, currentTry, loading]);
 
   useEffect(() => {
     if (!length || length < 4 || length > 11) {
@@ -117,6 +118,8 @@ const PlayPage = () => {
   }, [])
 
   const handleKeyboardType = (character: string) => {
+    if (loading) return
+
     if (character === 'backspace') {
       handleDelete();
     } else if (character === 'delete') {
@@ -150,10 +153,12 @@ const PlayPage = () => {
   const handleEnter = async () => {
     const isAllAnswered = answers[currentTry].every((item) => item.character !== '')
     if (isAllAnswered && currentTry < maxTry) {
+      setLoading(true)
       const isValid = await submitAnswer()
       if (isValid) {
         setCurrentTry(currentTry + 1)
       }
+      setLoading(false)
       // setCurrentTry(currentTry + 1)
     }
   }
@@ -286,7 +291,10 @@ const PlayPage = () => {
                     className={`w-[48px] h-[48px] text-2xl font-bold uppercase relative`}
                   >
                     <div
-                      className={`w-full rounded-sm h-full answer-tile ${currentTry > idAnswer ? "rotate" : ""}`}
+                      className={`
+                        w-full rounded-sm h-full answer-tile ${currentTry > idAnswer ? "rotate" : ""}
+                        ${(currentTry === idAnswer && loading) ? "animate-[pulse2_1s_infinite]" : ""}
+                      `}
                       style={{
                         transformStyle: "preserve-3d",
                         '--delay': `${0.15 * idItem}s`

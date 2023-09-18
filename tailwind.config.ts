@@ -4,7 +4,6 @@ const config: Config = {
   safelist: [
     {
       pattern: /bg-(red|green|blue|yellow|pink|purple)-(400|500)/,
-      variants: ['lg', 'hover', 'focus', 'lg:hover'],
     },
   ],
   content: [
@@ -19,6 +18,12 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      keyframes: {
+        pulse2: {
+          '0%, 100%': { opacity: "1" },
+          '50%': { opacity: "0.25" },
+        },
+      }
     },
     container: {
       center: true,
