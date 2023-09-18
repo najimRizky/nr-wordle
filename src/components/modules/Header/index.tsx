@@ -29,63 +29,70 @@ const Header = () => {
     signOut()
   }
 
-  if (excludeHeader.includes(pathname)) return null
   return (
-    <header className="container py-4">
+    <header
+      className={`
+        container py-4
+      `}
+    >
       <div className="flex justify-between">
-        <Link className="font-bold text-md flex items-center gap-x-1" href={"/"} >
-          <h1 className="tracking-widest">
-            Naz -
-          </h1>
-          {wordleProps.map((letter, index) => (
-            <div
-              className="relative w-[24px] h-[24px]"
-              key={index}
-              style={{
-                perspective: 1000,
-              }}
-            >
-              <motion.div
-                className="w-full h-full"
-                initial={{
-                  transformStyle: "preserve-3d",
-                }}
-                animate={{
-                  rotateX: 180,
-                  transition: {
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    repeatDelay: letter.delay,
-                    delay: letter.delay,
-                    duration: 1,
-                    type: "tween"
-                  }
+        {!excludeHeader.includes(pathname) ? (
+          <Link className="font-bold text-md flex items-center gap-x-1" href={"/"} >
+            <h1 className="tracking-widest">
+              Naz -
+            </h1>
+            {wordleProps.map((letter, index) => (
+              <div
+                className="relative w-[24px] h-[24px]"
+                key={index}
+                style={{
+                  perspective: 1000,
                 }}
               >
-                <div
-                  className="absolute flex w-full h-full justify-center items-center bg-gray-300 rounded-sm"
-                  style={{
-                    backfaceVisibility: "hidden",
-                    WebkitBackfaceVisibility: "hidden",
+                <motion.div
+                  className="w-full h-full"
+                  initial={{
+                    transformStyle: "preserve-3d",
+                  }}
+                  animate={{
+                    rotateX: 180,
+                    transition: {
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      repeatDelay: letter.delay,
+                      delay: letter.delay,
+                      duration: 1,
+                      type: "tween"
+                    }
                   }}
                 >
-                  {letter.char}
-                </div>
-                <div
-                  className={`absolute flex w-full h-full justify-center items-center ${letter.bgColor} rounded-sm top-0 left-0`}
-                  style={{
-                    transform: "rotateX(180deg)",
-                    backfaceVisibility: "hidden",
-                    WebkitBackfaceVisibility: "hidden",
+                  <div
+                    className="absolute flex w-full h-full justify-center items-center bg-gray-300 rounded-sm"
+                    style={{
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden",
+                    }}
+                  >
+                    {letter.char}
+                  </div>
+                  <div
+                    className={`absolute flex w-full h-full justify-center items-center ${letter.bgColor} rounded-sm top-0 left-0`}
+                    style={{
+                      transform: "rotateX(180deg)",
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden",
 
-                  }}
-                >
-                  {letter.char}
-                </div>
-              </motion.div>
-            </div>
-          ))}
-        </Link>
+                    }}
+                  >
+                    {letter.char}
+                  </div>
+                </motion.div>
+              </div>
+            ))}
+          </Link>
+        ) : (
+          <div />
+        )}
 
         {session ? (
           <>
