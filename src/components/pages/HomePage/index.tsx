@@ -80,60 +80,62 @@ const HomePage = () => {
           type: "tween"
         }}
       >
-        <div className="font-bold text-3xl flex items-center gap-x-2">
+        <div className="font-bold text-3xl flex flex-col xs:flex-row items-center gap-4">
           <h1 className="tracking-widest">
-            Naz -
+            Naz <span className="hidden xs:inline">-</span>
           </h1>
-          {wordleProps.map((letter, index) => (
-            <div
-              className="relative w-[48px] h-[48px]"
-              key={index}
-              style={{
-                perspective: 1000,
-              }}
-            >
-              <motion.div
-                className="w-full h-full"
-                initial={{
-                  transformStyle: "preserve-3d",
-                }}
-                animate={{
-                  rotateX: 180,
-                  transition: {
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    repeatDelay: letter.delay,
-                    delay: letter.delay,
-                    duration: 1,
-                    type: "tween"
-                  }
+          <div className="flex gap-x-2">
+            {wordleProps.map((letter, index) => (
+              <div
+                className="relative w-[48px] h-[48px]"
+                key={index}
+                style={{
+                  perspective: 1000,
                 }}
               >
-                <div
-                  className="absolute flex w-full h-full justify-center items-center bg-gray-300 rounded-sm"
-                  style={{
-                    backfaceVisibility: "hidden",
-                    WebkitBackfaceVisibility: "hidden",
+                <motion.div
+                  className="w-full h-full"
+                  initial={{
+                    transformStyle: "preserve-3d",
+                  }}
+                  animate={{
+                    rotateX: 180,
+                    transition: {
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      repeatDelay: letter.delay,
+                      delay: letter.delay,
+                      duration: 1,
+                      type: "tween"
+                    }
                   }}
                 >
-                  {letter.char}
-                </div>
-                <div
-                  className={`absolute flex w-full h-full justify-center items-center ${letter.bgColor} rounded-sm top-0 left-0`}
-                  style={{
-                    transform: "rotateX(180deg)",
-                    backfaceVisibility: "hidden",
-                    WebkitBackfaceVisibility: "hidden",
+                  <div
+                    className="absolute flex w-full h-full justify-center items-center bg-gray-300 rounded-sm"
+                    style={{
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden",
+                    }}
+                  >
+                    {letter.char}
+                  </div>
+                  <div
+                    className={`absolute flex w-full h-full justify-center items-center ${letter.bgColor} rounded-sm top-0 left-0`}
+                    style={{
+                      transform: "rotateX(180deg)",
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden",
 
-                  }}
-                >
-                  {letter.char}
-                </div>
-              </motion.div>
-            </div>
-          ))}
+                    }}
+                  >
+                    {letter.char}
+                  </div>
+                </motion.div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className={`w-[550px] relative flex justify-center delay-500 duration-500 ${ initial ? "h-64" : "h-[21rem]"}`}>
+        <div className={`w-full sm:w-[550px] relative flex justify-center delay-500 duration-500 overflow-hidden ${initial ? "h-64" : "h-[54rem] xs:h-[34rem] sm:h-[22rem]"}`}>
           <AnimatePresence initial={false}>
             {initial && (
               <motion.div

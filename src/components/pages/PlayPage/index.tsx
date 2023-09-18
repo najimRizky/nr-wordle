@@ -216,7 +216,7 @@ const PlayPage = () => {
       }
       return true
     } catch (error: any) {
-      const errorMessage = error.response.data
+      const errorMessage = error.response?.data
       if (errorMessage === "Word is not available") {
         animateInvalidWord()
       }
@@ -268,7 +268,7 @@ const PlayPage = () => {
 
   return (
     <>
-      <div className="container my-8">
+      <div className="container my-8 flex flex-col justify-between sm:justify-start  min-h-[75vh] sm:min-h-0">
 
         {/* Word Input */}
         <div
@@ -288,7 +288,7 @@ const PlayPage = () => {
                       scale: 1, opacity: 1
                     }}
                     key={item.character + idItem}
-                    className={`w-[48px] h-[48px] text-2xl font-bold uppercase relative`}
+                    className={`w-[32px] xs:w-[36px] sm:w-[48px] h-[32px] xs:h-[36px] sm:h-[48px] xs:text-xl sm:text-2xl font-bold uppercase relative`}
                   >
                     <div
                       className={`
@@ -335,14 +335,14 @@ const PlayPage = () => {
         </div>
 
         {/* Keyboard */}
-        <div className="flex flex-col gap-2 items-center mt-16 uppercase" >
-          <div className="grid-cols-10 grid gap-2">
+        <div className="flex flex-col gap-[1px] xs:gap-2 items-center sm:mt-16 uppercase" >
+          <div className="grid-cols-10 grid gap-[1px] xs:gap-2 w-full sm:w-fit">
             {keyboardChars[0].split('').map((character, x) => (
-              <div
+              <button
                 key={x}
                 onClick={() => handleKeyboardType(character)}
                 className={`
-                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300
+                flex rounded-sm w-full xs:w-[36px] sm:w-[48px] h-[64px] sm:h-[48px] justify-center items-center bg-gray-300 sm:text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300 uppercase
                 ${keyboardSats[character] === 'correct' ? 'bg-green-600 border-green-600 text-white'
                     : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
                       : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
@@ -351,16 +351,16 @@ const PlayPage = () => {
             `}
               >
                 {character}
-              </div>
+              </button>
             ))}
           </div>
-          <div className="grid-cols-10 grid gap-2">
+          <div className="grid-cols-10 grid gap-[1px] xs:gap-2 w-full sm:w-fit">
             {keyboardChars[1].split('').map((character, x) => (
-              <div
+              <button
                 key={x}
                 onClick={() => handleKeyboardType(character)}
                 className={`
-                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300
+                flex rounded-sm w-full xs:w-[36px] sm:w-[48px] h-[64px] sm:h-[48px] justify-center items-center bg-gray-300 sm:text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300 uppercase
                 ${keyboardSats[character] === 'correct' ? 'bg-green-600 border-green-600 text-white'
                     : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
                       : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
@@ -368,22 +368,22 @@ const PlayPage = () => {
               `}
               >
                 {character}
-              </div>
+              </button>
             ))}
-            <div
-              className="flex justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300"
+            <button
+              className="flex justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300 uppercase"
               onClick={() => handleKeyboardType('backspace')}
             >
-              <BackspaceIcon width={22} />
-            </div>
+              <BackspaceIcon width={18} />
+            </button>
           </div>
-          <div className="grid-cols-10 grid gap-2">
+          <div className="grid-cols-10 grid gap-[1px] xs:gap-2 w-full sm:w-fit">
             {keyboardChars[2].split('').map((character, x) => (
-              <div
+              <button
                 key={x}
                 onClick={() => handleKeyboardType(character)}
                 className={`
-                flex rounded-sm w-[48px] h-[48px] justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300
+                flex rounded-sm w-full xs:w-[36px] sm:w-[48px] h-[64px] sm:h-[48px] justify-center items-center bg-gray-300 sm:text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300 uppercase
                 ${keyboardSats[character] === 'correct' ? 'bg-green-600 border-green-600 text-white'
                     : keyboardSats[character] === 'almost' ? 'bg-yellow-500 border-yellow-500'
                       : keyboardSats[character] === 'wrong' ? 'bg-gray-700 text-white'
@@ -391,20 +391,20 @@ const PlayPage = () => {
                   }`}
               >
                 {character}
-              </div>
+              </button>
             ))}
-            <div
-              className="flex col-span-2 justify-center items-center bg-gray-300 text-lg font-bold cursor-pointer capitalize hover:bg-gray-400 duration-300"
+            <button
+              className="flex col-span-2 justify-center items-center bg-gray-300 sm:text-lg font-bold cursor-pointer hover:bg-gray-400 duration-300 uppercase"
               onClick={() => handleKeyboardType('enter')}
             >
               Enter
-            </div>
-            <div
-              className="flex justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300"
+            </button>
+            <button
+              className="flex justify-center items-center bg-gray-300 text-2xl font-bold cursor-pointer hover:bg-gray-400 duration-300 uppercase"
               onClick={() => handleKeyboardType('delete')}
             >
-              <TrashIcon width={28} />
-            </div>
+              <TrashIcon width={24} />
+            </button>
           </div>
         </div>
       </div >
@@ -416,7 +416,7 @@ const PlayPage = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="bg-white rounded-sm p-8 min-w-[500px]">
+            <div className="bg-white rounded-sm p-8 min-w-[95vw] sm:min-w-[500px]">
               <div className="text-xl font-bold text-center mb-8">
                 {isWin ? "Congratulations" : "Oops, you lose"}
               </div>

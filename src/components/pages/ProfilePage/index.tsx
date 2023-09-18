@@ -39,7 +39,7 @@ const ProfilePage = () => {
   if (loading) return <Spinner />
   return (
     <div className="container mt-8">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 gap-8">
         <div className="grid gap-y-6" >
           <div className="flex justify-between">
             <h1 className="text-xl border-b-2 border-black w-fit">PROFILE</h1>

@@ -25,6 +25,14 @@ const config: Config = {
         },
       }
     },
+    screens: {
+      xs: '480px',
+      sm: '600px',
+      md: '728px',
+      lg: '984px',
+      xl: '1180px',
+      '2xl': '1400px',
+    },
     container: {
       center: true,
       padding: '16px',
