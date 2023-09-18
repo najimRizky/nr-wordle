@@ -26,6 +26,7 @@ const Header = () => {
   const handleSignOut = () => {
     removeLocalStorage('user')
     removeLocalStorage('isInitialized')
+    removeLocalStorage('stats')
     signOut()
   }
 
