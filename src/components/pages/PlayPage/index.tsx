@@ -307,7 +307,15 @@ const PlayPage = () => {
                           WebkitBackfaceVisibility: "hidden",
                         }}
                       >
-                        {item.character}
+                        {(currentTry === idAnswer && idItem === answer.findIndex((item) => item.character === '')) ?
+                          <motion.span
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+                          >
+                            _
+                          </motion.span> : item.character
+                        }
                       </div>
                       <div
                         className={`
