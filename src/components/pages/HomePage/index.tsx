@@ -135,7 +135,7 @@ const HomePage = () => {
             ))}
           </div>
         </div>
-        <div className={`w-full sm:w-[550px] relative flex justify-center delay-500 duration-500 overflow-hidden ${initial ? "h-64" : "h-[54rem] xs:h-[34rem] sm:h-[22rem]"}`}>
+        <div className={`w-full sm:w-[550px] relative flex justify-center delay-500 duration-500 overflow-hidden ${initial ? "h-64" : "h-[54rem] xs:h-[34rem] sm:h-[23rem]"}`}>
           <AnimatePresence initial={false}>
             {initial && (
               <motion.div
