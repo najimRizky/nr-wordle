@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import Cryptr from "cryptr";
 import StatusType from "@/types/StatusType";
-import dictionary from "@/data/dictionary.json";
 import baseCookie from "@/config/baseCookie";
 import dbConnect from "@/database/connection";
 import { getServerSession } from "next-auth";
 import User from "@/database/model/User";
+import Word from "@/database/model/Words";
 
 export const POST = async (req: NextRequest) => {
   const { answer } = await req.json()
@@ -16,7 +16,9 @@ export const POST = async (req: NextRequest) => {
     })
   }
 
-  if (!isAnswerAvailable(answer)) {
+  const isValid = await isAnswerAvailable(answer)
+
+  if (isValid) {
     return new Response("Word is not available", {
       status: 400,
     })
@@ -111,6 +113,13 @@ const determineResult = (word: string, answer: string) => {
   };
 }
 
-const isAnswerAvailable = (answer: string) => {
-  return dictionary.includes(answer);
+const isAnswerAvailable = async (answer: string) => {
+  await dbConnect()
+  const word = await Word.findOne({ word: answer })
+  console.log(word)
+  
+  if (word) {
+    return false
+  }
+  return true
 }
