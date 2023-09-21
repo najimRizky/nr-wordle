@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse, } from "next/server"
-import dictionary from "@/data/dictionary.json"
 import Cryptr from "cryptr";
 import baseCookie from "@/config/baseCookie";
+import dbConnect from "@/database/connection";
+import Word from "@/database/model/Words";
 
 export const GET = async (req: NextRequest) => {
   const length = Number(req.nextUrl.searchParams.get("length")) || 0
@@ -12,11 +13,21 @@ export const GET = async (req: NextRequest) => {
     })
   }
 
-  const filteredDictionary = dictionary.filter((word) => word.length === length)
-  const randomIndex = Math.floor(Math.random() * filteredDictionary.length)
+  await dbConnect()
+
+  const randomWord = await Word.aggregate([
+    {
+      $match: {
+        $expr: {
+          $eq: [{ $strLenCP: "$word" }, length]
+        }
+      }
+    },
+    { $sample: { size: 1 } }
+  ])
 
   const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || ""
-  const word = filteredDictionary[randomIndex]
+  const word = randomWord[0].word
 
   const cryptr = new Cryptr(ENCRYPTION_KEY);
   const encryptedString = cryptr.encrypt(word);
