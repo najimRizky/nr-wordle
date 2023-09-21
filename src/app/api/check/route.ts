@@ -116,7 +116,6 @@ const determineResult = (word: string, answer: string) => {
 const isAnswerAvailable = async (answer: string) => {
   await dbConnect()
   const word = await Word.findOne({ word: answer })
-  console.log(word)
   
   if (word) {
     return false
