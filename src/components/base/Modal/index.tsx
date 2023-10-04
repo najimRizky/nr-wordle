@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import IModal from './interface'
 import CloseIcon from '@/components/icons/CloseIcon'
 import { AnimatePresence, motion } from 'framer-motion'
+import { modalVariant } from './variant'
 
 const Modal = ({ children, size = "md", onClose, isOpen, title }: IModal) => {
 
@@ -15,21 +16,16 @@ const Modal = ({ children, size = "md", onClose, isOpen, title }: IModal) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          exit={{
-            opacity: 0,
-          }}
+          variants={modalVariant}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
           style={{
             animationFillMode: 'forwards',
           }}
           className={`
-          duration-300 fixed z-50 inset-0 overflow-y-auto
-        `}
+            duration-300 fixed z-50 inset-0 overflow-y-auto
+          `}
         >
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <BgOverLay />
