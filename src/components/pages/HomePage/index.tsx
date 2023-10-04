@@ -4,57 +4,15 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import wordleProps from "@/config/wordleProps"
-import { useSession } from "next-auth/react"
-
-const levelSelections = [
-  // {
-  //   length: 3,
-  //   words: ["EAR", "ETA", "TAX"],
-  // },
-  {
-    length: 4,
-    words: ["EARN", "TIME", "BUSY"],
-  },
-  {
-    length: 5,
-    words: ["EARTH", "TIGER", "BRAVE"],
-  },
-  {
-    length: 6,
-    words: ["EASTER", "TIGERS", "BRAVES"],
-  },
-  {
-    length: 7,
-    words: ["ASTEROID", "PANCAKES", "CUPCAKES"],
-  },
-  {
-    length: 8,
-    words: ["DISASTER", "LAVENDER", "MAGNETIC"],
-  },
-  {
-    length: 9,
-    words: ["EARTHQUAKE", "TIGERWOODS", "BRAVEHEART"],
-  },
-  {
-    length: 10,
-    words: ["BALLASTING", "GLAMOURING", "CIRCULATED"],
-  },
-  {
-    length: 11,
-    words: ["DISASTEROUS", "LAVENDERING", "MAGNETIZING"],
-  },
-]
+import levelSelections from "@/config/levelSelections"
 
 const HomePage = () => {
-  const session = useSession()
-
   const [initial, setInitial] = useState(true)
   const [wordIndex, setWordIndex] = useState(0)
 
   const handlePlay = () => {
     setInitial(false)
   }
-
 
   useEffect(() => {
     const interval = setInterval(() => {
