@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import wordleProps from "@/config/wordleProps"
 import levelSelections from "@/config/levelSelections"
+import { baseMenuVariant, selectLevelMenuVariant } from "./variant"
 
 const HomePage = () => {
   const [initial, setInitial] = useState(true)
@@ -98,24 +99,10 @@ const HomePage = () => {
             {initial && (
               <motion.div
                 className="flex flex-col gap-4 mt-16"
-                initial={{
-                  x: 100,
-                  opacity: 0,
-                }}
-                animate={{
-                  x: 0,
-                  opacity: 1,
-                  transition: {
-                    duration: 0.5,
-                  }
-                }}
-                exit={{
-                  x: 100,
-                  opacity: 0,
-                  transition: {
-                    duration: 0.5,
-                  }
-                }}
+                variants={baseMenuVariant}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
               >
                 <button
                   onClick={handlePlay}
@@ -136,30 +123,10 @@ const HomePage = () => {
             {!initial && (
               <motion.div
                 className="absolute top-0 left-0 w-full"
-                initial={{
-                  x: 100,
-                  opacity: 0,
-                  visibility: "hidden",
-                }}
-                animate={{
-                  x: 0,
-                  opacity: 1,
-                  visibility: "visible",
-                  transition: {
-                    duration: 0.5,
-                    delay: 0.5,
-                    type: "tween"
-                  }
-                }}
-                exit={{
-                  x: 100,
-                  opacity: 0,
-                  visibility: "hidden",
-                  transition: {
-                    duration: 0.5,
-                    type: "tween"
-                  }
-                }}
+                variants={selectLevelMenuVariant}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
               >
                 <p className="text-center mt-12 mb-4 font-normal">
                   Choose character length:
