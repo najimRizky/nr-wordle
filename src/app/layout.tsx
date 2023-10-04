@@ -11,18 +11,18 @@ const nunito = Nunito({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'NAZ - Wordle | Wordle solver Game by Najim Rizky',
-  description: 'Wordle solver. Play and compete with other players.',
+  description: 'Challenge your word skills with Naz WORDLE, a dynamic wordle game offering various character lengths, competitive gameplay with leaderboards, and save your progress.',
+  robots: 'index, follow',
   authors: [
     {
       name: 'Najim Rizky',
       url: 'https://najim-rizky.com'
     }
   ],
+  publisher: 'Najim Rizky',
   openGraph: {
     type: "website",
     url: "https://naz-wordle.vercel.app",
-    title: "NAZ - Wordle | Wordle solver Game by Najim Rizky",
-    description: "Wordle solver. Play and compete with other players.",
     images: [
       {
         url: "https://naz-wordle.vercel.app/og-image.png",
@@ -30,8 +30,8 @@ export const metadata: Metadata = {
         alt: "Wordle",
       },
     ],
-    siteName: "NAZ - Wordle",
-  }
+    siteName: "NAZ Wordle",
+  },
 }
 
 export default async function RootLayout({
