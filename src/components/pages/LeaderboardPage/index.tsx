@@ -2,31 +2,15 @@
 
 import Flag from "@/components/modules/Flag"
 import Spinner from "@/components/modules/Spinner"
-import { UserContext } from "@/context/UserContextProvider"
-import axios from "axios"
-import { useSession } from "next-auth/react"
-import { useContext, useEffect, useState } from "react"
+import { useLeaderboardPageModel } from "./model"
 
 const LeaderboardPage = () => {
-  const { data: session } = useSession()
-  const [leaderboardData, setLeaderboardData] = useState<any>()
-  const [loading, setLoading] = useState<boolean>(true)
-  const { user: userContext } = useContext(UserContext)
-
-  const getLeaderboardData = async () => {
-    try {
-      const response = await axios.get('/api/leaderboard')
-      setLeaderboardData(response.data.data)
-    } catch (error: any) {
-      console.log(error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    getLeaderboardData()
-  }, [])
+  const {
+    leaderboardData,
+    loading,
+    session,
+    userContext
+  } = useLeaderboardPageModel()
 
   return (
     <div className="container my-8">
