@@ -5,13 +5,9 @@ import axios from "axios"
 import { animate } from "framer-motion"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useContext, useEffect, useRef, useState } from "react"
+import { Answer } from "./interface"
 
-interface IAnswer {
-  character: string
-  status: StatusType
-}
-
-const initialAnswer: IAnswer = {
+const initialAnswer: Answer = {
   character: '',
   status: null,
 }
@@ -66,7 +62,7 @@ export const usePlayPageModel = () => {
   const [currentTry, setCurrentTry] = useState(0)
   const [isWin, setIsWin] = useState<boolean | undefined>()
   const [word, setWord] = useState('')
-  const [answers, setAnswers] = useState<IAnswer[][]>(
+  const [answers, setAnswers] = useState<Answer[][]>(
     Array.from({ length: maxTry }).map(() =>
       Array.from({ length }).map(() => initialAnswer)
     )
@@ -126,8 +122,8 @@ export const usePlayPageModel = () => {
   }
 
   const handleDelete = () => {
-    const newAnswers: IAnswer[][] = deepClone(answers)
-    const currentAnswer: IAnswer[] = newAnswers[currentTry]
+    const newAnswers: Answer[][] = deepClone(answers)
+    const currentAnswer: Answer[] = newAnswers[currentTry]
     const lastAnswerIndex = currentAnswer.findLastIndex((item) => item.character !== '')
     if (lastAnswerIndex !== -1) {
       currentAnswer[lastAnswerIndex] = initialAnswer
@@ -136,8 +132,8 @@ export const usePlayPageModel = () => {
   }
 
   const handleClear = () => {
-    const newAnswers: IAnswer[][] = deepClone(answers)
-    const currentAnswer: IAnswer[] = newAnswers[currentTry]
+    const newAnswers: Answer[][] = deepClone(answers)
+    const currentAnswer: Answer[] = newAnswers[currentTry]
     currentAnswer.forEach((item) => {
       item.character = ''
     })
@@ -158,8 +154,8 @@ export const usePlayPageModel = () => {
   }
 
   const handleAddChar = (character: string) => {
-    const newAnswers: IAnswer[][] = deepClone(answers)
-    const currentAnswer: IAnswer[] = newAnswers[currentTry]
+    const newAnswers: Answer[][] = deepClone(answers)
+    const currentAnswer: Answer[] = newAnswers[currentTry]
     const firstAnswerIndex = currentAnswer.findIndex((item) => item.character === '')
     if (firstAnswerIndex !== -1) {
       currentAnswer[firstAnswerIndex].character = character
@@ -217,13 +213,13 @@ export const usePlayPageModel = () => {
     }
   }
 
-  const updateAnswer = (newAnswer: IAnswer[]) => {
-    const newAnswers: IAnswer[][] = deepClone(answers)
+  const updateAnswer = (newAnswer: Answer[]) => {
+    const newAnswers: Answer[][] = deepClone(answers)
     newAnswers[currentTry] = newAnswer
     setAnswers(newAnswers)
   }
 
-  const updateKeyboardSats = (lastAnswer: IAnswer[]) => {
+  const updateKeyboardSats = (lastAnswer: Answer[]) => {
     const newKeyboardSats = { ...keyboardSats }
     lastAnswer.forEach((item) => {
       if (newKeyboardSats[item.character] !== 'wrong' && newKeyboardSats[item.character] !== 'correct') {
