@@ -1,40 +1,17 @@
 "use client"
 
-import axios from "axios"
-import { useContext, useEffect, useState } from "react"
 import moment from "moment";
 import Flag from "@/components/modules/Flag";
 import UserForm from "@/components/modules/UserForm";
 import Spinner from "@/components/modules/Spinner";
-import { UserContext } from "@/context/UserContextProvider";
+import { useProfilePageModel } from "./model";
 
 const ProfilePage = () => {
-  const [profileData, setProfileData] = useState<any>()
-  const [loading, setLoading] = useState(true)
-  const { updateUser } = useContext(UserContext)
-
-  const getProfileData = async (updateContext: boolean = false) => {
-    setLoading(true)
-    try {
-      const response = await axios.get('/api/user')
-      setProfileData(response.data.data)
-      if (updateContext) {
-        updateUser(response.data.data.user)
-      }
-
-    } catch (error: any) {
-      console.log(error)
-    }
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    getProfileData()
-  }, [])
-
-  const handleSuccess = () => {
-    getProfileData(true)
-  }
+  const { 
+    handleSuccess,
+    loading,
+    profileData,
+  } = useProfilePageModel()
 
   if (loading) return <Spinner />
   return (
