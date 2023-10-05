@@ -1,13 +1,7 @@
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/helper/localStorage';
 import axios from 'axios';
-import { createContext, useEffect, useMemo, useState } from 'react';
-
-interface IUserContext {
-  user?: any;
-  stats?: any;
-  updateUser?: any
-  updateStats?: any
-}
+import { createContext, useEffect, useState } from 'react';
+import { IUserContext } from './interface';
 
 export const UserContext = createContext<IUserContext>({})
 
