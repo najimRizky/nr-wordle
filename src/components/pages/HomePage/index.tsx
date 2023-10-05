@@ -1,33 +1,18 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import wordleProps from "@/config/wordleProps"
 import levelSelections from "@/config/levelSelections"
 import { baseMenuVariant, selectLevelMenuVariant } from "./variant"
+import { useHomePageModel } from "./model"
 
 const HomePage = () => {
-  const [initial, setInitial] = useState(true)
-  const [wordIndex, setWordIndex] = useState(0)
-
-  const handlePlay = () => {
-    setInitial(false)
-  }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setWordIndex((prev) => {
-        if (prev === 2) {
-          return 0
-        } else {
-          return prev + 1
-        }
-      })
-    }, 4000)
-
-    return () => clearInterval(interval)
-  }, [wordIndex])
+  const { 
+    initial, 
+    wordIndex, 
+    handlePlay
+  } = useHomePageModel()
 
   return (
     <div className="container ">
