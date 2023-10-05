@@ -1,16 +1,13 @@
 "use client"
 
-import { useEffect, useState } from 'react'
-import IModal from './interface'
 import CloseIcon from '@/components/icons/CloseIcon'
 import { AnimatePresence, motion } from 'framer-motion'
 import { modalVariant } from './variant'
+import { ModalProps } from './interface'
+import { useModalModel } from './model'
 
-const Modal = ({ children, size = "md", onClose, isOpen, title }: IModal) => {
-
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : 'auto'
-  }, [isOpen])
+const Modal = ({ children, size = "md", onClose, isOpen, title }: ModalProps) => {
+  useModalModel({ isOpen })
 
   return (
     <AnimatePresence>
