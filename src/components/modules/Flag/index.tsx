@@ -1,9 +1,5 @@
 import Flags from 'country-flag-icons/react/3x2'
-
-type FlagProps = {
-  countryCode: string;
-  size?: number;
-};
+import { FlagProps, NoFlagProps } from './interface';
 
 const Flag = ({ countryCode, size = 32 }: FlagProps) => {
   if (!countryCode) {
@@ -26,11 +22,7 @@ const Flag = ({ countryCode, size = 32 }: FlagProps) => {
 
 export default Flag;
 
-interface INoFlag {
-  width: number;
-}
-
-const NoFlag = ({ width }: INoFlag) => (
+const NoFlag = ({ width }: NoFlagProps) => (
   <div style={{ width: width, height: width / 1.5 }}>
     <div className="w-full h-full flex justify-center items-center bg-gray-300 font-bold"> ? </div>
   </div>
