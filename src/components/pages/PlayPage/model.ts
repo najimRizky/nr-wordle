@@ -199,7 +199,7 @@ export const usePlayPageModel = () => {
               newStats.losses += 1
             }
             newStats.total += 1
-            newStats.percentage = (newStats.wins / newStats.total) * 100
+            newStats.percentage = (newStats.wins / newStats.total)
             updateStats(newStats)
           }
         }, (0.2 * length) * 1000)
