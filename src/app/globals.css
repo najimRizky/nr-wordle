@@ -2,13 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    font-family: "Nunito", sans-serif;
-  }
-}
-
 body {
   color: #2D2D2D;
   background-color: #EFEFEF;
+  font-family: "Nunito", sans-serif;
 }
