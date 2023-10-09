@@ -9,6 +9,7 @@ export const useHomePageModel = () => {
   }
 
   useEffect(() => {
+    if (initial) return
     const interval = setInterval(() => {
       setWordIndex((prev) => {
         if (prev === 2) {
@@ -20,7 +21,7 @@ export const useHomePageModel = () => {
     }, 4000)
 
     return () => clearInterval(interval)
-  }, [wordIndex])
+  }, [wordIndex, initial])
 
   return {
     initial,
