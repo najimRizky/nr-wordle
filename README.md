@@ -1,6 +1,14 @@
 # Naz - WORDLE
 By: [Najim Rizky](https://najim-rizky.com)
 
+<p align="center">
+  <img src="https://github.com/najimRizky/naz-wordle/blob/main/src/assets/schreenshots/home.png" alt="Naz-Wordle" width="320"/>
+  <img src="https://github.com/najimRizky/naz-wordle/blob/main/src/assets/schreenshots/home-difficulty.png" alt="Naz-Wordle" width="320"/>
+  <img src="https://github.com/najimRizky/naz-wordle/blob/main/src/assets/schreenshots/how-to-play.png" alt="Naz-Wordle" width="320"/>
+  <img src="https://github.com/najimRizky/naz-wordle/blob/main/src/assets/schreenshots/on-game.png" alt="Naz-Wordle" width="320"/>
+  <img src="https://github.com/najimRizky/naz-wordle/blob/main/src/assets/schreenshots/end-game.png" alt="Naz-Wordle" width="320"/>
+</p>
+
 Challenge your word skills with Naz WORDLE, a dynamic wordle game offering various character lengths, competitive gameplay with leaderboards, and save your progress.
 
 ## Tech Stack
