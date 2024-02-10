@@ -10,8 +10,8 @@ import authOptions from '@/config/authOptions'
 const nunito = Nunito({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'NAZ - Wordle | Wordle solver Game by Najim Rizky',
-  description: 'Challenge your word skills with Naz WORDLE, a dynamic wordle game offering various character lengths, competitive gameplay with leaderboards, and save your progress.',
+  title: 'NR - Wordle | Wordle solver Game by Najim Rizky',
+  description: 'Challenge your word skills with NR WORDLE, a dynamic wordle game offering various character lengths, competitive gameplay with leaderboards, and save your progress.',
   robots: 'index, follow',
   authors: [
     {
@@ -22,15 +22,15 @@ export const metadata: Metadata = {
   publisher: 'Najim Rizky',
   openGraph: {
     type: "website",
-    url: "https://naz-wordle.vercel.app",
+    url: "https://nr-wordle.vercel.app",
     images: [
       {
-        url: "https://naz-wordle.vercel.app/og-image.png",
+        url: "https://nr-wordle.vercel.app/og-image.png",
         type: "image/png",
         alt: "Wordle",
       },
     ],
-    siteName: "NAZ Wordle",
+    siteName: "NR - Wordle",
   },
 }
 

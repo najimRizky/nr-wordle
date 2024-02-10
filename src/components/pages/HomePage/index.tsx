@@ -35,7 +35,7 @@ const HomePage = () => {
         >
           <div className="font-bold text-3xl flex flex-col xs:flex-row items-center gap-4">
             <h1 className="tracking-widest">
-              Naz <span className="hidden xs:inline">-</span>
+              NR <span className="hidden xs:inline">-</span>
             </h1>
             <div className="flex gap-x-2">
               {wordleProps.map((letter, index) => (

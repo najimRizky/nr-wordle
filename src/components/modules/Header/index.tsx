@@ -40,7 +40,7 @@ const Header = () => {
         {!excludeHeader.includes(pathname) ? (
           <Link className="font-bold text-md flex items-center gap-x-1" href={"/"} >
             <h1 className="tracking-widest">
-              Naz -
+              NR -
             </h1>
             {wordleProps.map((letter, index) => (
               <div
